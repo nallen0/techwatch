@@ -1,0 +1,30 @@
+# Secrets — never commit
+.env
+.env.local
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node
+dashboard/node_modules/
+.npm_cache/
+
+# Build artifacts (CI rebuilds these)
+dashboard/dist/
+
+# Electron packaging
+release/
+
+# Dev / scratch (root-level only)
+scratch/
+/data/
+/report.csv
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Claude local config
+.claude/
