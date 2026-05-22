@@ -274,7 +274,7 @@ function App() {
             <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }} onClick={async () => {
               const csv = window.electronAPI
                 ? await window.electronAPI.getReportCsv()
-                : await fetch('/report.csv').then(r => r.text());
+                : await fetch(import.meta.env.BASE_URL + 'report.csv').then(r => r.text());
               const a = document.createElement('a');
               a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
               a.download = 'report.csv';
@@ -291,33 +291,48 @@ function App() {
             <section className="stats-grid animate-fade-in">
               <div className="glass-card metric-card">
                 <span className="metric-label">Research Papers</span>
+                <span style={{ fontSize: '0.7rem', color: '#475569', display: 'block', marginTop: '2px', marginBottom: '8px' }}>PubMed · arXiv · OpenAlex</span>
                 <div className="metric-value">{latest.total_research?.toLocaleString() || '0'}</div>
                 <div style={{ color: '#10b981', fontSize: '0.875rem' }}>
                   {calculateGrowth(latest.total_research, previous.total_research)}% {frequency === 'Monthly' ? 'MoM' : 'QoQ'}
                 </div>
-              </div>
-              <div className="glass-card metric-card">
-                <span className="metric-label">Clinical Trial Starts</span>
-                <div className="metric-value">{latest.total_trial?.toLocaleString() || '0'}</div>
-                <div style={{ color: '#10b981', fontSize: '0.875rem' }}>
-                   {calculateGrowth(latest.total_trial, previous.total_trial)}% {frequency === 'Monthly' ? 'MoM' : 'QoQ'}
+                <div style={{ fontSize: '0.7rem', color: '#475569', marginTop: '4px' }}>
+                  papers published {frequency === 'Monthly' ? latest.month : 'this quarter'}, across all 5 categories
                 </div>
               </div>
               <div className="glass-card metric-card">
-                <span className="metric-label">Open Source (GitHub)</span>
+                <span className="metric-label">Clinical Trial Starts</span>
+                <span style={{ fontSize: '0.7rem', color: '#475569', display: 'block', marginTop: '2px', marginBottom: '8px' }}>ClinicalTrials.gov · FDA</span>
+                <div className="metric-value">{latest.total_trial?.toLocaleString() || '0'}</div>
+                <div style={{ color: '#10b981', fontSize: '0.875rem' }}>
+                  {calculateGrowth(latest.total_trial, previous.total_trial)}% {frequency === 'Monthly' ? 'MoM' : 'QoQ'}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#475569', marginTop: '4px' }}>
+                  new trials registered {frequency === 'Monthly' ? latest.month : 'this quarter'}
+                </div>
+              </div>
+              <div className="glass-card metric-card">
+                <span className="metric-label">Open Source Repos</span>
+                <span style={{ fontSize: '0.7rem', color: '#475569', display: 'block', marginTop: '2px', marginBottom: '8px' }}>GitHub Search API</span>
                 <div className="metric-value">{latest.total_development?.toLocaleString() || '0'}</div>
                 <div style={{ color: '#10b981', fontSize: '0.875rem' }}>
-                  {calculateGrowth(latest.total_development, previous.total_development)}% trend
+                  {calculateGrowth(latest.total_development, previous.total_development)}% {frequency === 'Monthly' ? 'MoM' : 'QoQ'}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#475569', marginTop: '4px' }}>
+                  repos created {frequency === 'Monthly' ? latest.month : 'this quarter'}, matched by keyword
                 </div>
               </div>
             </section>
 
             <div className="stats-grid animate-fade-in" style={{ gridTemplateColumns: '1.5fr 1fr' }}>
               <div className="glass-card">
-                <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h3 style={{ marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <BarChart2 size={20} color="var(--accent-color)" />
                   Innovation Pipeline Trends
                 </h3>
+                <p style={{ fontSize: '0.75rem', color: '#475569', marginBottom: '1.25rem' }}>
+                  24-month rolling window · total signals across all 5 categories per {frequency === 'Monthly' ? 'month' : 'quarter'}
+                </p>
                 <div className="chart-container">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data}>
@@ -341,7 +356,8 @@ function App() {
               </div>
 
               <div className="glass-card">
-                <h3 style={{ marginBottom: '1.5rem' }}>Latest Category Mix</h3>
+                <h3 style={{ marginBottom: '0.25rem' }}>Latest Category Mix</h3>
+                <p style={{ fontSize: '0.75rem', color: '#475569', marginBottom: '1.25rem' }}>{latest.month} · research, trial & dev signals by category</p>
                 <div className="chart-container">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart cx="50%" cy="50%" outerRadius="80%" data={categoriesData}>
