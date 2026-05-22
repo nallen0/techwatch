@@ -575,7 +575,8 @@ function App() {
         {activeTab === 'Economy' && (
           <div className="stats-grid">
              <div className="glass-card">
-               <h3>Industrial Production Index</h3>
+               <h3 style={{ marginBottom: '0.25rem' }}>Industrial Production Index</h3>
+               <p style={{ fontSize: '0.75rem', color: '#475569', marginBottom: '1.25rem' }}>FRED · INDPRO · monthly, seasonally adjusted</p>
                <div className="chart-container">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={data}>
@@ -589,7 +590,10 @@ function App() {
                </div>
              </div>
              <div className="glass-card">
-               <h3>Renewable Generation (×1,000 MWh)</h3>
+               <h3 style={{ marginBottom: '0.25rem' }}>Renewable Generation (×1,000 MWh)</h3>
+               <p style={{ fontSize: '0.75rem', color: '#f59e0b', marginBottom: '1.25rem' }}>
+                 EIA API · all-renewables monthly generation · ⚠ EIA endpoint currently unavailable — most months show no data
+               </p>
                <div className="chart-container">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data}>
